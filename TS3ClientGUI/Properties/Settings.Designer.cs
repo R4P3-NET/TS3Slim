@@ -82,5 +82,17 @@ namespace TS3ClientGUI.Properties {
                 this["autoconnect"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool debug {
+            get {
+                return ((bool)(this["debug"]));
+            }
+            set {
+                this["debug"] = value;
+            }
+        }
     }
 }

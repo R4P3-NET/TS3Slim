@@ -49,6 +49,8 @@ namespace TS3ClientGUI
             SaveSettings();
             this.btn_connect.Visible = false;
             this.btn_disconnect.Visible = true;
+            this.txt_message.ReadOnly = false;
+            this.btn_send.Enabled = true;
             Client.TS3Client.Connect(this);
         }
 
@@ -71,7 +73,25 @@ namespace TS3ClientGUI
         {
             this.btn_disconnect.Visible = false;
             this.btn_connect.Visible = true;
+            this.btn_send.Enabled = false;
+            this.txt_message.ReadOnly = true;
             Client.TS3Client.client.Disconnect();
+        }
+
+        private void btn_send_Click(object sender, EventArgs e)
+        {
+            Client.TS3Client.SendMessage(this.txt_message.Text);
+            this.txt_message.Clear();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Up))
+            {
+                this.txt_message.ClearUndo();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

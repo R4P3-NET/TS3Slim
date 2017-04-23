@@ -1,0 +1,25 @@
+sudo: false
+language: csharp
+
+notifications:
+  email: false
+
+branches:
+  only:
+    - master
+    - develop
+
+git:
+  depth: 1
+
+install:
+  - nuget restore TS3AudioBot.sln
+  - nuget install NUnit.Runners -OutputDirectory nunit
+
+script:
+  - xbuild /p:Configuration=Release /p:Platform=x86 TS3AudioBot.sln
+  - mono ./nunit/NUnit.ConsoleRunner.*.*.*/tools/nunit3-console.exe ./TS3ABotUnitTests/bin/Release/TS3ABotUnitTests.dll
+
+after_script:
+  - chmod u+x ts3notify.sh
+  - ./ts3notify.sh

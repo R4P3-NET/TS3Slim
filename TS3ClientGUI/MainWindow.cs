@@ -20,7 +20,7 @@ namespace TS3ClientGUI
             InitializeComponent();
             LoadSettings();
             if (Properties.Settings.Default.autoconnect)
-                Client.Connect(this);
+                Connect();
         }
 
         public void LoadSettings()
@@ -33,12 +33,7 @@ namespace TS3ClientGUI
             this.chk_autoconnect.Checked = settings.autoconnect;
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_connect_Click(object sender, EventArgs e)
+        public void SaveSettings()
         {
             var settings = Properties.Settings.Default;
             settings.ip = this.ip.Text;
@@ -47,7 +42,36 @@ namespace TS3ClientGUI
             settings.password = this.password.Text;
             settings.autoconnect = this.chk_autoconnect.Checked;
             Properties.Settings.Default.Save();
-            Client.Connect(this);
+        }
+
+        public void Connect()
+        {
+            SaveSettings();
+            this.btn_connect.Visible = false;
+            this.btn_disconnect.Visible = true;
+            Client.TS3Client.Connect(this);
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_connect_Click(object sender, EventArgs e)
+        {
+            Connect();
+        }
+
+        private void txt_message_TextChanged(object sender, EventArgs e)
+        {
+            this.btn_send.Enabled = true;
+        }
+
+        private void btn_disconnect_Click(object sender, EventArgs e)
+        {
+            this.btn_disconnect.Visible = false;
+            this.btn_connect.Visible = true;
+            Client.TS3Client.client.Disconnect();
         }
     }
 }

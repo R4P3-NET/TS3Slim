@@ -12,44 +12,52 @@ namespace TS3ClientGUI
 {
     class Client
     {
-        static ConnectionDataFull con;
-        static Ts3FullClient client;
-        static MainWindow mainwindow;
+        public static Client TS3Client = new Client();
 
-        static void TS3Client()
+        ConnectionDataFull con;
+        public Ts3FullClient client;
+        MainWindow mainwindow;
+        IdentityData id = Ts3Crypt.GenerateNewIdentity(8);
+
+        public Client()
         {
-            client = new Ts3FullClient(EventDispatchType.ExtraDispatchThread);
+            client = new Ts3FullClient(EventDispatchType.CurrentThread);
             client.OnConnected += Client_OnConnected;
             client.OnDisconnected += Client_OnDisconnected;
             client.OnErrorEvent += Client_OnErrorEvent;
             client.OnTextMessageReceived += Client_OnTextMessageReceived;
         }
 
-        public static void Connect(MainWindow sender)
+        public void Connect(MainWindow sender)
         {
             mainwindow = sender;
-            var data = Ts3Crypt.LoadIdentity("MG8DAgeAAgEgAiEAqNonGuL0w/8kLlgLbl4UkH8DQQJ7fEu1tLt+mx1E+XkCIQDgQoIGcBVvAvNoiDT37iWbPQb2kYe0+VKLg67OH2eQQwIgTyijCKx7QB/xQSnIW5uIkVmcm3UU5P2YnobR9IEEYPg=", 64, 0);
-            var settings = Properties.Settings.Default;
-            con = new ConnectionDataFull() { Hostname = settings.ip, Port = settings.port, Username = settings.nickname, Identity = data, Password = settings.password, VersionSign = VersionSign.VER_WIN_3_1 };
+            //var data = Ts3Crypt.LoadIdentity("MG8DAgeAAgEgAiEAqNonGuL0w/8kLlgLbl4UkH8DQQJ7fEu1tLt+mx1E+XkCIQDgQoIGcBVvAvNoiDT37iWbPQb2kYe0+VKLg67OH2eQQwIgTyijCKx7QB/xQSnIW5uIkVmcm3UU5P2YnobR9IEEYPg=", 64, 0);
+            con = new ConnectionDataFull() {
+                Hostname = Properties.Settings.Default.ip,
+                Port = Properties.Settings.Default.port,
+                Username = Properties.Settings.Default.nickname,
+                Identity = id,
+                Password = Properties.Settings.Default.password
+            };
             client.Connect(con);
         }
 
-        private static void Client_OnDisconnected(object sender, DisconnectEventArgs e)
+        private void Client_OnDisconnected(object sender, DisconnectEventArgs e)
         {
             var client = (Ts3FullClient)sender;
             Console.WriteLine("Disconnected id {0}", client.ClientId);
         }
 
-        private static void Client_OnConnected(object sender, EventArgs e)
+        private void Client_OnConnected(object sender, EventArgs e)
         {
             var client = (Ts3FullClient)sender;
-            mainwindow.ChatWidget.AppendText("Connected to "+Properties.Settings.Default.ip+":"+Properties.Settings.Default.port);
+            //mainwindow.ChatWidget.AppendText("Connected to "+Properties.Settings.Default.ip+":"+Properties.Settings.Default.port);
             var data = client.ClientInfo(client.ClientId);
             //client.Disconnect();
             //client.Connect(con);
         }
 
-        private static void Client_OnTextMessageReceived(object sender, IEnumerable<TextMessage> e)
+        private void Client_OnTextMessageReceived(object sender, IEnumerable<TextMessage> e)
         {
             foreach (var msg in e)
             {
@@ -71,7 +79,7 @@ namespace TS3ClientGUI
             }
         }
 
-        private static void Client_OnErrorEvent(object sender, CommandError e)
+        private void Client_OnErrorEvent(object sender, CommandError e)
         {
             var client = (Ts3FullClient)sender;
             Console.WriteLine(e.ErrorFormat());

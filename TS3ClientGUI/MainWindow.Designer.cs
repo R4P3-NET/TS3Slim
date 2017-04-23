@@ -42,6 +42,9 @@
             this.TreeView = new System.Windows.Forms.ListBox();
             this.ChatWidget = new System.Windows.Forms.RichTextBox();
             this.infoData = new System.Windows.Forms.RichTextBox();
+            this.btn_send = new System.Windows.Forms.Button();
+            this.txt_message = new System.Windows.Forms.TextBox();
+            this.btn_disconnect = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbl_ip
@@ -146,7 +149,8 @@
             // 
             this.ChatWidget.Location = new System.Drawing.Point(12, 493);
             this.ChatWidget.Name = "ChatWidget";
-            this.ChatWidget.Size = new System.Drawing.Size(769, 153);
+            this.ChatWidget.ReadOnly = true;
+            this.ChatWidget.Size = new System.Drawing.Size(769, 134);
             this.ChatWidget.TabIndex = 11;
             this.ChatWidget.Text = "";
             // 
@@ -154,15 +158,49 @@
             // 
             this.infoData.Location = new System.Drawing.Point(379, 37);
             this.infoData.Name = "infoData";
+            this.infoData.ReadOnly = true;
             this.infoData.Size = new System.Drawing.Size(402, 450);
             this.infoData.TabIndex = 12;
             this.infoData.Text = "";
+            // 
+            // btn_send
+            // 
+            this.btn_send.Enabled = false;
+            this.btn_send.Location = new System.Drawing.Point(706, 633);
+            this.btn_send.Name = "btn_send";
+            this.btn_send.Size = new System.Drawing.Size(75, 23);
+            this.btn_send.TabIndex = 13;
+            this.btn_send.Text = "Send";
+            this.btn_send.UseVisualStyleBackColor = true;
+            // 
+            // txt_message
+            // 
+            this.txt_message.Location = new System.Drawing.Point(12, 635);
+            this.txt_message.Name = "txt_message";
+            this.txt_message.ReadOnly = true;
+            this.txt_message.Size = new System.Drawing.Size(688, 20);
+            this.txt_message.TabIndex = 14;
+            this.txt_message.TextChanged += new System.EventHandler(this.txt_message_TextChanged);
+            // 
+            // btn_disconnect
+            // 
+            this.btn_disconnect.Location = new System.Drawing.Point(706, 8);
+            this.btn_disconnect.Name = "btn_disconnect";
+            this.btn_disconnect.Size = new System.Drawing.Size(75, 23);
+            this.btn_disconnect.TabIndex = 15;
+            this.btn_disconnect.Text = "Disconnect";
+            this.btn_disconnect.UseVisualStyleBackColor = true;
+            this.btn_disconnect.Visible = false;
+            this.btn_disconnect.Click += new System.EventHandler(this.btn_disconnect_Click);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(793, 658);
+            this.Controls.Add(this.btn_disconnect);
+            this.Controls.Add(this.txt_message);
+            this.Controls.Add(this.btn_send);
             this.Controls.Add(this.infoData);
             this.Controls.Add(this.ChatWidget);
             this.Controls.Add(this.TreeView);
@@ -199,6 +237,9 @@
         public System.Windows.Forms.ListBox TreeView;
         public System.Windows.Forms.RichTextBox ChatWidget;
         public System.Windows.Forms.RichTextBox infoData;
+        private System.Windows.Forms.Button btn_send;
+        private System.Windows.Forms.TextBox txt_message;
+        private System.Windows.Forms.Button btn_disconnect;
     }
 }
 
